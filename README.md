@@ -23,7 +23,7 @@ or
 3. Unzip and replace `chrome_elf.dll` and `config.ini` 
 
 #### Uninstall:
-* Just run uninstall.bat
+* Just run [uninstall.bat](https://raw.githubusercontent.com/Daksh777/BlockTheSpot/master/uninstall.bat)
 or
 * Reinstall Spotify 
 
