@@ -8,11 +8,6 @@
     </p> 
 </center>
 
-#### Important checks prior to install:
-0. Update Windows, Update Spotify/other software, update BlockTheSpot
-1. Goto "Windows Security" -> "Virus & Threat Protection"
-2. Click "Allowed threats" -> "Remove all allowed threats"
-
 ### Features:
 * Blocks all banner/video/audio ads within the app
 * Retains friend, vertical video and radio functionality
