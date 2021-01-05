@@ -14,6 +14,7 @@ Author: @rednek46
 
 $SpotifyDirectory = "$env:APPDATA\Spotify"
 $SpotifyExecutable = "$SpotifyDirectory\Spotify.exe"
+$SpotifyApps = "$SpotifyDirectory\Apps"
 
 Write-Host 'Stopping Spotify...'`n
 Stop-Process -Name Spotify
@@ -63,8 +64,21 @@ try {
   Write-Output $_
   Sleep
 }
+try {
+  $webClient.DownloadFile(
+    # Remote file URL
+    'https://github.com/mrpond/BlockTheSpot/files/5767943/zlink.zip',
+    # Local file path
+    "$PWD\zlink.zip"
+  )
+} catch {
+  Write-Output $_
+  Sleep
+}
 Expand-Archive -Force -LiteralPath "$PWD\chrome_elf.zip" -DestinationPath $PWD
 Remove-Item -LiteralPath "$PWD\chrome_elf.zip"
+Expand-Archive -Force -LiteralPath "$PWD\zlink.zip" -DestinationPath $PWD
+Remove-Item -LiteralPath "$PWD\zlink.zip"
 
 $spotifyInstalled = (Test-Path -LiteralPath $SpotifyExecutable)
 if (-not $spotifyInstalled) {
@@ -102,8 +116,18 @@ if (!(test-path $SpotifyDirectory/chrome_elf.dll.bak)){
 
 Write-Host 'Patching Spotify...'
 $patchFiles = "$PWD\chrome_elf.dll", "$PWD\config.ini"
+$remup = "$PWD\zlink.spa"
 Copy-Item -LiteralPath $patchFiles -Destination "$SpotifyDirectory"
 
+$ch = Read-Host -Prompt "Optional - Remove Upgrade Button. (Y/N) "
+if ($ch -eq 'y'){
+    move $SpotifyApps\zlink.spa $SpotifyApps\zlink.spa.bak >$null 2>&1
+    Copy-Item -LiteralPath $remup -Destination "$SpotifyApps"
+} else{
+     Write-Host @'
+Won't remove Upgrade Button.
+'@`n
+}
 $tempDirectory = $PWD
 Pop-Location
 
