@@ -1,3 +1,5 @@
+#include <array>
+#include <future>
 #include "hosts.h"
 #include "Config.h"
 #include "Logger.h"
@@ -7,17 +9,21 @@
 
 _getaddrinfo getaddrinfo_orig;
 
-const std::vector<std::string_view> blockList = { "google", "doubleclick", "qualaroo.com", "fbsbx.com", "adeventtracker" };
+auto *config = new Config ();
+auto *logger = new Logger (config);
+static constexpr std::array<std::string_view, 2> dnscheck = { "dns.google", "cloudflare" };
+static constexpr std::array<std::string_view, 4> blockList = { "google", "doubleclick", "qualaroo.com", "fbsbx.com" };
+static const bool wpad = config->getConfig ("Skip_wpad");
 
 // check if ads hostname
-bool is_blockhost (std::string_view nodename, Config* config) {
-
+bool is_blockhost (std::string_view nodename) {
+	//static bool wpad = config->getConfig ("Skip_wpad");
 	
-	static bool wpad = config->getConfig ("Skip_wpad");
+	
 	if (0 == nodename.compare ("wpad"))
 		return wpad ? true : false;
-	for (auto i : blockList) {
-		if (std::string_view::npos != nodename.find (i))
+	for (auto &hostname : blockList) {
+		if (std::string_view::npos != nodename.find (hostname))
 			return true;
 	}
 	return false;
@@ -29,14 +35,13 @@ int WSAAPI getaddrinfo_hook (
 	_In_opt_	const ADDRINFOA* hints,
 	_Out_		PADDRINFOA* res)
 {
-	static auto* config = new Config ();
-	static auto* logger = new Logger (config);
+
 	if (nodename == nullptr)
 		return getaddrinfo_orig (nodename, servname, hints, res);
 
 	std::string nnodename (nodename);
 	
-	auto isblock = std::async (std::launch::async, is_blockhost, nnodename, config);
+	auto isblock = std::async (std::launch::async, is_blockhost, nnodename);
 	auto result = getaddrinfo_orig (nodename, servname, hints, res);
 	if (0 == result) {
 		if (isblock.get ()) {
@@ -48,6 +53,15 @@ int WSAAPI getaddrinfo_hook (
 		}
 		else {
 			logger->Log ("allowed - " + nnodename);
+		}
+	}
+	if (true == logger->is_active() &&
+		true == wpad)
+	{
+		for (auto &hostname : dnscheck) {
+			if (std::string_view::npos != nnodename.find (hostname))
+				logger->Log ("custom dns currently in use - " + nnodename +
+							 " turn on Skip_wpad in config.ini or switch to adguard dns");
 		}
 	}
 	return result;

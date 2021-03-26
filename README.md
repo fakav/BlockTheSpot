@@ -2,8 +2,8 @@
     <h1 align="center">BlockTheSpot</h1>
     <h4 align="center">A multi-purpose adblocker and skip-bypass for the <strong>Windows</strong> Spotify desktop application.</h4>
     <p align="center">
-        <strong>Last updated:</strong> 10 December 2020<br>
-        <strong>Last tested version:</strong> 1.1.54.592.gc0b20638
+        <strong>Last updated:</strong> 24 March 2020<br>
+        <strong>Last tested version:</strong> 1.1.55.498.gf9a83c60
     </p> 
 </center>
 
