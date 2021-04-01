@@ -3,7 +3,7 @@
     <h4 align="center">A multi-purpose adblocker and skip-bypass for the <strong>Windows</strong> Spotify desktop application.</h4>
     <p align="center">
         <strong>Last updated:</strong> 24 March 2020<br>
-        <strong>Last tested version:</strong> 1.1.55.498.gf9a83c60
+        <strong>Last tested version:</strong> 1.1.56.595.g2d2da0de
     </p> 
 </center>
 
@@ -21,6 +21,7 @@
 
 #### Installation/Update:
 * Just download and run [BlockTheSpot.bat](https://raw.githubusercontent.com/Daksh777/BlockTheSpot/master/BlockTheSpot.bat)
+* Enter 'Y' when prompted to swap Alpha UI to Old UI if needed.
 or
 1. Browse to your Spotify installation folder `%APPDATA%\Spotify`
 2. Download `chrome_elf.zip` from [releases](https://github.com/mrpond/BlockTheSpot/releases)
