@@ -9,6 +9,7 @@ $PSDefaultParameterValues['Stop-Process:ErrorAction'] = 'SilentlyContinue'
 write-host @'
 ***************** 
 Author: @rednek46
+Edited by: @Daksh777
 ***************** 
 '@
 
@@ -135,8 +136,11 @@ Copy-Item -LiteralPath $patchFiles -Destination "$SpotifyDirectory"
 
 $ch = Read-Host -Prompt "Optional - Remove Upgrade Button. (Y/N) "
 if ($ch -eq 'y'){
-    move $SpotifyApps\zlink.spa $SpotifyApps\zlink.spa.bak >$null 2>&1
-    Copy-Item -LiteralPath $remup -Destination "$SpotifyApps"
+  start http://github.com/Daksh777/SpotifyNoPremium
+    Write-Host @'
+Opened browser tab with the instructions. 
+Didn't work? Visit http://github.com/Daksh777/SpotifyNoPremium
+'@`n
 } else{
      Write-Host @'
 Won't remove Upgrade Button.
