@@ -65,6 +65,21 @@ try {
   Write-Output $_
   Sleep
 }
+try {
+  $webClient.DownloadFile(
+    # Remote file URL
+    'https://github.com/mrpond/BlockTheSpot/files/6234124/xpui.zip',
+    # Local file path
+    "$PWD\xpui.zip"
+  )
+} catch {
+  Write-Output $_
+  Sleep
+}
+Expand-Archive -Force -LiteralPath "$PWD\chrome_elf.zip" -DestinationPath $PWD
+Remove-Item -LiteralPath "$PWD\chrome_elf.zip"
+Expand-Archive -Force -LiteralPath "$PWD\xpui.zip" -DestinationPath $PWD
+Remove-Item -LiteralPath "$PWD\xpui.zip"
 
 $spotifyInstalled = (Test-Path -LiteralPath $SpotifyExecutable)
 if (-not $spotifyInstalled) {
