@@ -22,20 +22,23 @@
 
 #### Installation/Update:
 * Just download and run [BlockTheSpot.bat](https://raw.githubusercontent.com/Daksh777/BlockTheSpot/master/BlockTheSpot.bat)
-* Enter 'Y' when prompted to swap Alpha UI to Old UI if needed.
-or
-1. Browse to your Spotify installation folder `%APPDATA%\Spotify`
-2. Download `chrome_elf.zip` from [releases](https://github.com/mrpond/BlockTheSpot/releases)
-3. Unzip and replace `chrome_elf.dll` and `config.ini` 
+* Enter 'Y' when prompted to swap Alpha UI to Old UI if needed. <br>
+
+or <br>
+
+* Browse to your Spotify installation folder `%APPDATA%\Spotify`
+* Download `chrome_elf.zip` from [releases](https://github.com/mrpond/BlockTheSpot/releases)
+* Unzip and replace `chrome_elf.dll` and `config.ini` 
 
 #### Uninstall:
-* Just run [uninstall.bat](https://raw.githubusercontent.com/Daksh777/BlockTheSpot/master/uninstall.bat)
-or
+* Just run [uninstall.bat](https://raw.githubusercontent.com/Daksh777/BlockTheSpot/master/uninstall.bat) <br>
+
+or <br>
+
 * Reinstall Spotify 
 
-#### Known Issues:  
-* Optional feature "Remove Upgrade Button" will not work with Spicetify, also might have issues with alpha Spotify.  
-* It will also have issues with the latest Spotify version where the user avatar will be blank, Check [#83](https://github.com/mrpond/BlockTheSpot/issues/83) for more info.   
+#### Known Issues:    
+* The user avatar will be blank, Check [#83](https://github.com/mrpond/BlockTheSpot/issues/83) for more info.   
 
 #### Note:
 * "chrome_elf.dll" gets replaced by the Spotify installer each time it updates, make sure to replace it after an update.  
