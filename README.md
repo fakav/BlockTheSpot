@@ -2,8 +2,8 @@
     <h1 align="center">BlockTheSpot</h1>
     <h4 align="center">A multi-purpose adblocker and skip-bypass for the <strong>Windows</strong> Spotify desktop application.</h4>
     <p align="center">
-        <strong>Last updated:</strong> 24 March 2020<br>
-        <strong>Last tested version:</strong> 1.1.56.595.g2d2da0de
+        <strong>Last updated:</strong> 21 April 2021<br>
+        <strong>Last tested version:</strong> 1.1.57.443.ga029a6c4(-a)
     </p> 
 </center>
 
@@ -15,7 +15,8 @@
 ### Features:
 * Blocks all banner/video/audio ads within the app
 * Retains friend, vertical video and radio functionality
-* Unlocks the skip function for any track
+* Unlocks the skip function for any track  
+* Now supports the new Alpha version (New UI)  
 
 :warning: This mod is for the [**Desktop Application**](https://www.spotify.com/download/windows/) of Spotify on Windows only and **not the Microsoft Store version**.
 
@@ -33,9 +34,8 @@ or
 * Reinstall Spotify 
 
 #### Known Issues:  
-* BlockTheSpot will have issues blocking ads on the alpha version of Spotify. To identify this, look into the Spotify version and see if there is `-a` in the end. If so, you have an alpha version of Spotify. To be able to use BlockTheSpot, [click here](http://download.spotify.com/SpotifyFullSetup.exe) to download the latest Spotify stable/public version.  
 * Optional feature "Remove Upgrade Button" will not work with Spicetify, also might have issues with alpha Spotify.  
-* It will also have issues with the latest Spotify version where the user avatar will be blank.   
+* It will also have issues with the latest Spotify version where the user avatar will be blank, Check [#83](https://github.com/mrpond/BlockTheSpot/issues/83) for more info.   
 
 #### Note:
 * "chrome_elf.dll" gets replaced by the Spotify installer each time it updates, make sure to replace it after an update.  
