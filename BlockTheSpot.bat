@@ -65,21 +65,9 @@ try {
   Write-Output $_
   Sleep
 }
-try {
-  $webClient.DownloadFile(
-    # Remote file URL
-    'https://github.com/mrpond/BlockTheSpot/files/6234124/xpui.zip',
-    # Local file path
-    "$PWD\xpui.zip"
-  )
-} catch {
-  Write-Output $_
-  Sleep
-}
+
 Expand-Archive -Force -LiteralPath "$PWD\chrome_elf.zip" -DestinationPath $PWD
 Remove-Item -LiteralPath "$PWD\chrome_elf.zip"
-Expand-Archive -Force -LiteralPath "$PWD\xpui.zip" -DestinationPath $PWD
-Remove-Item -LiteralPath "$PWD\xpui.zip"
 
 $spotifyInstalled = (Test-Path -LiteralPath $SpotifyExecutable)
 if (-not $spotifyInstalled) {
@@ -133,17 +121,6 @@ Didn't work? Visit http://github.com/Daksh777/SpotifyNoPremium
 Won't remove Upgrade Button.
 '@`n
 }
-
-$ch = Read-Host -Prompt "Change Alpha UI back to Old UI. (BTS only supports Old UI). (Y/N) "
-if ($ch -eq 'y'){
-    move $SpotifyApps\xpui.spa $SpotifyApps\xpui.spa.bak >$null 2>&1
-    Copy-Item -LiteralPath $uipat -Destination "$SpotifyApps"
-} else{
-     Write-Host @'
-UI isn't changed.
-'@`n
-}
-
 
 $tempDirectory = $PWD
 Pop-Location
