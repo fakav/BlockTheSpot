@@ -39,6 +39,7 @@ or <br>
 
 #### Known Issues:    
 * The user avatar will be blank, Check [#83](https://github.com/mrpond/BlockTheSpot/issues/83) for more info.   
+* The new UI will have black banner without ads. See [#150](https://github.com/mrpond/BlockTheSpot/issues/150)
 
 #### Note:
 * "chrome_elf.dll" gets replaced by the Spotify installer each time it updates, make sure to replace it after an update.  
