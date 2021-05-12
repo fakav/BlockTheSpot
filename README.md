@@ -21,8 +21,7 @@
 :warning: This mod is for the [**Desktop Application**](https://www.spotify.com/download/windows/) of Spotify on Windows only and **not the Microsoft Store version**.
 
 #### Installation/Update:
-* Just download and run [BlockTheSpot.bat](https://raw.githubusercontent.com/Daksh777/BlockTheSpot/master/BlockTheSpot.bat)
-* Enter 'Y' when prompted to swap Alpha UI to Old UI if needed. <br>
+* Just download and run [BlockTheSpot.bat](https://raw.githubusercontent.com/Daksh777/BlockTheSpot/master/BlockTheSpot.bat) <br>
 
 or <br>
 
