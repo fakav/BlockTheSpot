@@ -105,8 +105,6 @@ if (!(test-path $SpotifyDirectory/chrome_elf.dll.bak)){
 
 Write-Host 'Patching Spotify...'
 $patchFiles = "$PWD\chrome_elf.dll", "$PWD\config.ini"
-$remup = "$PWD\zlink.spa"
-$uipat = "$PWD\xpui.spa"
 Copy-Item -LiteralPath $patchFiles -Destination "$SpotifyDirectory"
 <#
 $ch = Read-Host -Prompt "Optional - Remove Upgrade Button. (Y/N) "
@@ -114,7 +112,7 @@ if ($ch -eq 'y'){
   start http://github.com/Daksh777/SpotifyNoPremium
     Write-Host @'
 Opened browser tab with the instructions. 
-Didn't work? Visit http://github.com/Daksh777/SpotifyNoPremium
+Didn't work? Visit https://github.com/Daksh777/SpotifyNoPremium
 '@`n
 } else{
      Write-Host @'
