@@ -10,7 +10,7 @@ $PSDefaultParameterValues['Stop-Process:ErrorAction'] = 'SilentlyContinue'
 write-host @'
 ***************** 
 Author: @rednek46
-Edited by: @Daksh777
+Modified By: @Daksh777
 ***************** 
 '@
 
@@ -106,8 +106,9 @@ if (!(test-path $SpotifyDirectory/chrome_elf.dll.bak)){
 
 Write-Host 'Patching Spotify...'
 $patchFiles = "$PWD\chrome_elf.dll", "$PWD\config.ini"
+
 Copy-Item -LiteralPath $patchFiles -Destination "$SpotifyDirectory"
-<#
+
 $ch = Read-Host -Prompt "Optional - Remove Upgrade Button. (Y/N) "
 if ($ch -eq 'y'){
   start http://github.com/Daksh777/SpotifyNoPremium
