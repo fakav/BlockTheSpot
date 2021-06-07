@@ -9,7 +9,7 @@ $PSDefaultParameterValues['Stop-Process:ErrorAction'] = 'SilentlyContinue'
 
 write-host @'
 ***************** 
-Author: @rednek46
+Author: @Nuzair46
 Modified By: @Daksh777
 ***************** 
 '@
