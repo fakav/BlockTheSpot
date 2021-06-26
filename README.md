@@ -22,12 +22,7 @@
 
 #### Installation/Update:
 * Just download and run [BlockTheSpot.bat](https://raw.githubusercontent.com/Daksh777/BlockTheSpot/master/BlockTheSpot.bat) <br>
-
-or <br>
-
-* Browse to your Spotify installation folder `%APPDATA%\Spotify`
-* Download `chrome_elf.zip` from [releases](https://github.com/mrpond/BlockTheSpot/releases)
-* Unzip and replace `chrome_elf.dll` and `config.ini` 
+* (Optional) Use [SpotifyNoPremium](https://github.com/Daksh777/SpotifyNoPremium) to declutter the Spotify UI. 
 
 #### Uninstall:
 * Just run [uninstall.bat](https://raw.githubusercontent.com/Daksh777/BlockTheSpot/master/uninstall.bat) <br>
