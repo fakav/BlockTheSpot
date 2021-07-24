@@ -15,8 +15,8 @@
 ### Features:
 * Blocks all banner/video/audio ads within the app
 * Retains friend, vertical video and radio functionality
-* Unlocks the skip function for any track  
-* Now supports the new Alpha version (New UI)  
+* Unlocks the skip function for any track
+* Now supports the new Alpha version (New UI)
 
 :warning: This mod is for the [**Desktop Application**](https://www.spotify.com/download/windows/) of Spotify on Windows only and **not the Microsoft Store version**.
 
@@ -35,9 +35,10 @@ or <br>
 * The user avatar will be blank, Check [#83](https://github.com/mrpond/BlockTheSpot/issues/83) for more info.   
 * The new UI will have black banner without ads. See [#150](https://github.com/mrpond/BlockTheSpot/issues/150)
 
-#### Note:
-* "chrome_elf.dll" gets replaced by the Spotify installer each time it updates, make sure to replace it after an update.  
-* Spicetify users have to reapply BlockTheSpot after applying a Spicetify theme.  
+### Additional Notes:  
+* BlockTheSpot might only works as expected with the last tested version. Please check it before opening an issue.  
+* "chrome_elf.dll" gets replaced by the Spotify installer each time it updates, hence why you'll probably need to apply the patch again when it happens
+* [Spicetify](https://github.com/khanhas/spicetify-cli) users will need to reapply BlockTheSpot after applying a Spicetify patches.
 * The ad banner may appear if your network uses [Web Proxy Auto-Discovery Protocol](https://en.wikipedia.org/wiki/Web_Proxy_Auto-Discovery_Protocol)
     * Setting `Skip_wpad = 1` in config.ini may help
 * For Spotify Premium users, setting `Block_BannerOnly = 1` will only block the banner at home
