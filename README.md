@@ -21,7 +21,7 @@
 :warning: This mod is for the [**Desktop Application**](https://www.spotify.com/download/windows/) of Spotify on Windows only and **not the Microsoft Store version**.
 
 #### Installation/Update:
-* Just download and run [BlockTheSpot.bat](https://raw.githubusercontent.com/Daksh777/BlockTheSpot/master/BlockTheSpot.bat) <br>
+* Just download and run [install.ps1](https://raw.githubusercontent.com/Daksh777/BlockTheSpot/master/install.ps1) <br>
 * (Optional) Use [SpotifyNoPremium](https://github.com/Daksh777/SpotifyNoPremium) to declutter the Spotify UI. 
 
 #### Uninstall:
