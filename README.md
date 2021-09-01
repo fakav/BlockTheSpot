@@ -2,8 +2,8 @@
     <h1 align="center">BlockTheSpot</h1>
     <h4 align="center">A multi-purpose adblocker and skip-bypass for the <strong>Windows</strong> Spotify desktop application.</h4>
     <p align="center">
-        <strong>Last updated:</strong> 1 August 2021<br>
-        <strong>Last tested version:</strong> 1.1.64.561.g71bd09eb-a
+        <strong>Last updated:</strong> 17 August 2021<br>
+        <strong>Last tested version:</strong> 1.1.67.586.gbb5ef64e
     </p> 
 </center>
 
@@ -31,12 +31,10 @@ or <br>
 
 * Reinstall Spotify 
 
-#### Known Issues:    
-* The user avatar will be blank, Check [#83](https://github.com/mrpond/BlockTheSpot/issues/83) for more info.   
-* The new UI will have black banner without ads. See [#150](https://github.com/mrpond/BlockTheSpot/issues/150)
+### Known Issues:  
+* You may face issue [#150](https://github.com/mrpond/BlockTheSpot/issues/150).    
+* We support last 2 version of Spotify (latest + previous) only. Please check it before opening an issue.
 
 ### Additional Notes:  
-* BlockTheSpot might only works as expected with the last tested version. Please check it before opening an issue.  
 * "chrome_elf.dll" gets replaced by the Spotify installer each time it updates, hence why you'll probably need to apply the patch again when it happens
 * [Spicetify](https://github.com/khanhas/spicetify-cli) users will need to reapply BlockTheSpot after applying a Spicetify patches.
-
