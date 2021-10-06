@@ -112,7 +112,7 @@ Write-Host 'Patching Spotify...'
 $patchFiles = "$PWD\chrome_elf.dll", "$PWD\config.ini"
 Copy-Item -LiteralPath $patchFiles -Destination "$SpotifyDirectory"
 
-$ch = Read-Host -Prompt "Optional - Remove ad placeholder and upgrade button. (Experimental) (Y/N) "
+$ch = Read-Host -Prompt "Optional - Remove ad placeholder and upgrade button. Press 'N' if using Spicetify (Y/N) "
 if ($ch -eq 'y') {
     Add-Type -Assembly 'System.IO.Compression.FileSystem'
 
