@@ -86,11 +86,6 @@ Write-Host "Stopping Spotify...`n"
 Stop-Process -Name Spotify
 Stop-Process -Name SpotifyWebHelper
 
-if ($PSVersionTable.PSVersion.Major -ge 7)
-{
-  Import-Module Appx -UseWindowsPowerShell
-}
-
 Push-Location -LiteralPath $env:TEMP
 try
 {
