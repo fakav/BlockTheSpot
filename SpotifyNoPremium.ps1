@@ -1,70 +1,147 @@
-$PSDefaultParameterValues['Stop-Process:ErrorAction'] = 'SilentlyContinue'
+# Ignore errors from `Stop-Process`
+$PSDefaultParameterValues['Stop-Process:ErrorAction'] = [System.Management.Automation.ActionPreference]::SilentlyContinue
+function Get-File
+{
+    param (
+        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [System.Uri]
+        $Uri,
+        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [System.IO.FileInfo]
+        $TargetFile,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Int32]
+        $BufferSize = 1,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [ValidateSet('KB, MB')]
+        [String]
+        $BufferUnit = 'MB',
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [ValidateSet('KB, MB')]
+        [Int32]
+        $Timeout = 10000
+    )
 
-write-host @'
-***************** 
-Author: @Nuzair46
-Modified By: @Daksh777
-***************** 
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+    $useBitTransfer = $null -ne (Get-Module -Name BitsTransfer -ListAvailable) -and ($PSVersionTable.PSVersion.Major -le 5)
+
+    if ($useBitTransfer)
+    {
+        Write-Information -MessageData 'Using a fallback BitTransfer method since you are running Windows PowerShell'
+        Start-BitsTransfer -Source $Uri -Destination "$($TargetFile.FullName)"
+    }
+    else
+    {
+        $request = [System.Net.HttpWebRequest]::Create($Uri)
+        $request.set_Timeout($Timeout) #15 second timeout
+        $response = $request.GetResponse()
+        $totalLength = [System.Math]::Floor($response.get_ContentLength() / 1024)
+        $responseStream = $response.GetResponseStream()
+        $targetStream = New-Object -TypeName ([System.IO.FileStream]) -ArgumentList "$($TargetFile.FullName)", Create
+        switch ($BufferUnit)
+        {
+            'KB' { $BufferSize = $BufferSize * 1024 }
+            'MB' { $BufferSize = $BufferSize * 1024 * 1024 }
+            Default { $BufferSize = 1024 * 1024 }
+        }
+        Write-Verbose -Message "Buffer size: $BufferSize B ($($BufferSize/("1$BufferUnit")) $BufferUnit)"
+        $buffer = New-Object byte[] $BufferSize
+        $count = $responseStream.Read($buffer, 0, $buffer.length)
+        $downloadedBytes = $count
+        $downloadedFileName = $Uri -split '/' | Select-Object -Last 1
+        while ($count -gt 0)
+        {
+            $targetStream.Write($buffer, 0, $count)
+            $count = $responseStream.Read($buffer, 0, $buffer.length)
+            $downloadedBytes = $downloadedBytes + $count
+            Write-Progress -Activity "Downloading file '$downloadedFileName'" -Status "Downloaded ($([System.Math]::Floor($downloadedBytes/1024))K of $($totalLength)K): " -PercentComplete ((([System.Math]::Floor($downloadedBytes / 1024)) / $totalLength) * 100)
+        }
+
+        Write-Progress -Activity "Finished downloading file '$downloadedFileName'"
+
+        $targetStream.Flush()
+        $targetStream.Close()
+        $targetStream.Dispose()
+        $responseStream.Dispose()
+    }
+}
+
+Write-Host @'
+*****************
+Authors: @Nuzair46, @KUTlime, @Daksh777
+*****************
 '@
 
-$SpotifyDirectory = "$env:APPDATA\Spotify"
-$SpotifyExecutable = "$SpotifyDirectory\Spotify.exe"
-$SpotifyApps = "$SpotifyDirectory\Apps"
+$spotifyDirectory = Join-Path -Path $env:APPDATA -ChildPath 'Spotify'
+$spotifyExecutable = Join-Path -Path $spotifyDirectory -ChildPath 'Spotify.exe'
+$spotifyApps = Join-Path -Path $spotifyDirectory -ChildPath 'Apps'
 
-Write-Host 'Stopping Spotify...'`n
+Write-Host "Stopping Spotify...`n"
 Stop-Process -Name Spotify
 Stop-Process -Name SpotifyWebHelper
 
 if ($PSVersionTable.PSVersion.Major -ge 7)
 {
-    Import-Module Appx -UseWindowsPowerShell
+  Import-Module Appx -UseWindowsPowerShell
 }
 
 Push-Location -LiteralPath $env:TEMP
-try {
+try
+{
   # Unique directory name based on time
-  New-Item -Type Directory -Name "BlockTheSpot-$(Get-Date -UFormat '%Y-%m-%d_%H-%M-%S')" `
-  | Convert-Path `
-  | Set-Location
-} catch {
+  New-Item -Type Directory -Name "BlockTheSpot-$(Get-Date -UFormat '%Y-%m-%d_%H-%M-%S')" |
+  Convert-Path |
+  Set-Location
+}
+catch
+{
   Write-Output $_
-  Pause
+  Read-Host 'Press any key to exit...'
   exit
 }
 
-Write-Host 'Downloading latest patch (chrome_elf.zip)...'`n
-$webClient = New-Object -TypeName System.Net.WebClient
-try {
-  $webClient.DownloadFile(
-    # Remote file URL
-    'https://github.com/mrpond/BlockTheSpot/releases/latest/download/chrome_elf.zip',
-    # Local file path
-    "$PWD\chrome_elf.zip"
-  )
-} catch {
+Write-Host "Downloading latest patch (chrome_elf.zip)...`n"
+$elfPath = Join-Path -Path $PWD -ChildPath 'chrome_elf.zip'
+try
+{
+  $uri = 'https://github.com/mrpond/BlockTheSpot/releases/latest/download/chrome_elf.zip'
+  Get-File -Uri $uri -TargetFile "$elfPath"
+}
+catch
+{
   Write-Output $_
-  Sleep
+  Start-Sleep
 }
 
-Expand-Archive -Force -LiteralPath "$PWD\chrome_elf.zip" -DestinationPath $PWD
-Remove-Item -LiteralPath "$PWD\chrome_elf.zip"
+Expand-Archive -Force -LiteralPath "$elfPath" -DestinationPath $PWD
+Remove-Item -LiteralPath "$elfPath" -Force
 
-if (!(test-path $SpotifyDirectory/chrome_elf_bak.dll)){
-	move $SpotifyDirectory\chrome_elf.dll $SpotifyDirectory\chrome_elf_bak.dll >$null 2>&1
+$elfDllBackFilePath = Join-Path -Path $spotifyDirectory -ChildPath 'chrome_elf_bak.dll'
+$elfBackFilePath = Join-Path -Path $spotifyDirectory -ChildPath 'chrome_elf.dll'
+if ((Test-Path $elfDllBackFilePath) -eq $false)
+{
+  Move-Item -LiteralPath "$elfBackFilePath" -Destination "$elfDllBackFilePath" | Write-Verbose
 }
 
 Write-Host 'Patching Spotify...'
-$patchFiles = "$PWD\chrome_elf.dll", "$PWD\config.ini"
+$patchFiles = (Join-Path -Path $PWD -ChildPath 'chrome_elf.dll'), (Join-Path -Path $PWD -ChildPath 'config.ini')
 
-Copy-Item -LiteralPath $patchFiles -Destination "$SpotifyDirectory"
+Copy-Item -LiteralPath $patchFiles -Destination "$spotifyDirectory"
 
 $tempDirectory = $PWD
 Pop-Location
 
-Remove-Item -Recurse -LiteralPath $tempDirectory  
+Remove-Item -LiteralPath $tempDirectory -Recurse
 
 Write-Host 'Patching Complete, starting Spotify...'
-Start-Process -WorkingDirectory $SpotifyDirectory -FilePath $SpotifyExecutable
+
+Start-Process -WorkingDirectory $spotifyDirectory -FilePath $spotifyExecutable
 Write-Host 'Done.'
 
 exit
