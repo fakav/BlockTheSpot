@@ -3,7 +3,7 @@
     <h4 align="center">A multi-purpose adblocker and skip-bypass for the <strong>Windows</strong> Spotify desktop application.</h4>
     <p align="center">
         <strong>Last updated:</strong> 29 October 2021<br>
-        <strong>Last tested version:</strong> 1.1.74.631.g0b24d9ad
+        <strong>Last tested version:</strong> 1.1.76.447.g11f432d8
     </p> 
 </center>
 
@@ -21,7 +21,7 @@
 :warning: This mod is for the [**Desktop Application**](https://www.spotify.com/download/windows/) of Spotify on Windows only and **not the Microsoft Store version**.
 
 #### Installation/Update:
-* Just download and run [install.ps1](https://raw.githubusercontent.com/Daksh777/BlockTheSpot/master/install.ps1) <br>
+* Just download and run [BlockTheSpot.bat](https://raw.githubusercontent.com/Daksh777/BlockTheSpot/master/BlockTheSpot.bat) <br>
 * (Optional) Use [SpotifyNoPremium](https://github.com/Daksh777/SpotifyNoPremium) to declutter the Spotify UI. 
 
 #### Uninstall:
