@@ -1,5 +1,21 @@
+param (
+  [Parameter()]
+  [switch]
+  $UninstallSpotifyStoreEdition = (Read-Host -Prompt 'Uninstall Spotify Windows Store edition if it exists (Y/N)') -eq 'y',
+  [Parameter()]
+  [switch]
+  $UpdateSpotify,
+  [Parameter()]
+  [switch]
+  $RemoveAdPlaceholder = (Read-Host -Prompt 'Optional - Remove ad placeholder and upgrade button. (Y/N)') -eq 'y'
+)
+
 # Ignore errors from `Stop-Process`
 $PSDefaultParameterValues['Stop-Process:ErrorAction'] = [System.Management.Automation.ActionPreference]::SilentlyContinue
+
+[System.Version] $minimalSupportedSpotifyVersion = '1.1.73.517'
+[System.Version] $maximalSupportedSpotifyVersion = '1.1.79.763'
+
 function Get-File
 {
   param (
@@ -72,6 +88,28 @@ function Get-File
   }
 }
 
+function Test-SpotifyVersion
+{
+  param (
+    [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
+    [ValidateNotNullOrEmpty()]
+    [System.Version]
+    $MinimalSupportedVersion,
+    [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
+    [ValidateNotNullOrEmpty()]
+    [System.Version]
+    $MaximalSupportedVersion,
+    [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+    [System.Version]
+    $TestedVersion
+  )
+
+  process
+  {
+    return ($MinimalSupportedVersion.CompareTo($TestedVersion) -le 0) -and ($MaximalSupportedVersion.CompareTo($TestedVersion) -ge 0)
+  }
+}
+
 Write-Host @'
 *****************
 @mrpond message:
@@ -90,6 +128,8 @@ $spotifyDirectory = Join-Path -Path $env:APPDATA -ChildPath 'Spotify'
 $spotifyExecutable = Join-Path -Path $spotifyDirectory -ChildPath 'Spotify.exe'
 $spotifyApps = Join-Path -Path $spotifyDirectory -ChildPath 'Apps'
 
+[System.Version] $actualSpotifyClientVersion = (Get-ChildItem -LiteralPath $spotifyExecutable -ErrorAction:SilentlyContinue).VersionInfo.ProductVersionRaw
+
 Write-Host "Stopping Spotify...`n"
 Stop-Process -Name Spotify
 Stop-Process -Name SpotifyWebHelper
@@ -103,8 +143,7 @@ if (Get-AppxPackage -Name SpotifyAB.SpotifyMusic)
 {
   Write-Host "The Microsoft Store version of Spotify has been detected which is not supported.`n"
 
-  $ch = Read-Host -Prompt 'Uninstall Spotify Windows Store edition (Y/N)'
-  if ($ch -eq 'y')
+  if ($UninstallSpotifyStoreEdition)
   {
     Write-Host "Uninstalling Spotify.`n"
     Get-AppxPackage -Name SpotifyAB.SpotifyMusic | Remove-AppxPackage
@@ -148,24 +187,17 @@ Expand-Archive -Force -LiteralPath "$elfPath" -DestinationPath $PWD
 Remove-Item -LiteralPath "$elfPath" -Force
 
 $spotifyInstalled = Test-Path -LiteralPath $spotifyExecutable
-$update = $false
-if ($spotifyInstalled)
+$unsupportedClientVersion = ($actualSpotifyClientVersion | Test-SpotifyVersion -MinimalSupportedVersion $minimalSupportedSpotifyVersion -MaximalSupportedVersion $maximalSupportedSpotifyVersion) -eq $false
+
+if (-not $UpdateSpotify -and $unsupportedClientVersion)
 {
-  $ch = Read-Host -Prompt 'Optional - Update Spotify to the latest version. (Might already be updated). (Y/N)'
-  if ($ch -eq 'y')
+  if ((Read-Host -Prompt 'In order to install Block the Spot, your Spotify client must be updated. Do you want to continue? (Y/N)') -ne 'y')
   {
-    $update = $true
-  }
-  else
-  {
-    Write-Host 'Won''t try to update Spotify.'
+    exit
   }
 }
-else
-{
-  Write-Host 'Spotify installation was not detected.'
-}
-if (-not $spotifyInstalled -or $update)
+
+if (-not $spotifyInstalled -or $UpdateSpotify -or $unsupportedClientVersion)
 {
   Write-Host 'Downloading the latest Spotify full setup, please wait...'
   $spotifySetupFilePath = Join-Path -Path $PWD -ChildPath 'SpotifyFullSetup.exe'
@@ -216,7 +248,7 @@ if (-not $spotifyInstalled -or $update)
   # Create a Shortcut to Spotify in %APPDATA%\Microsoft\Windows\Start Menu\Programs and Desktop
   # (allows the program to be launched from search and desktop)
   $wshShell = New-Object -ComObject WScript.Shell
-  
+
   $desktopShortcutPath = "$env:USERPROFILE\Desktop\Spotify.lnk"
   if ((Test-Path $desktopShortcutPath) -eq $false)
   {
@@ -232,7 +264,7 @@ if (-not $spotifyInstalled -or $update)
     $startMenuShortcut.TargetPath = "$env:APPDATA\Spotify\Spotify.exe"
     $startMenuShortcut.Save()
   }
-  
+
 
   Write-Host 'Stopping Spotify...Again'
 
@@ -252,8 +284,7 @@ $patchFiles = (Join-Path -Path $PWD -ChildPath 'chrome_elf.dll'), (Join-Path -Pa
 
 Copy-Item -LiteralPath $patchFiles -Destination "$spotifyDirectory"
 
-$ch = Read-Host -Prompt 'Optional - Remove ad placeholder and upgrade button. (Y/N)'
-if ($ch -eq 'y')
+if ($RemoveAdPlaceholder)
 {
   $xpuiBundlePath = Join-Path -Path $spotifyApps -ChildPath 'xpui.spa'
   $xpuiUnpackedPath = Join-Path -Path (Join-Path -Path $spotifyApps -ChildPath 'xpui') -ChildPath 'xpui.js'
@@ -335,5 +366,3 @@ Write-Host @'
 Please retweet these hashtag, help me stop dictator government!
 *****************
 '@
-
-exit
