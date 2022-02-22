@@ -32,7 +32,7 @@ or <br>
 * Reinstall Spotify 
 
 ### Known Issues:  
-* You may face issue [#150](https://github.com/mrpond/BlockTheSpot/issues/150). Can be fixed by enabling the experimental feature when using `BlockTheSpot.bat`.
+* You may face issue [#150](https://github.com/mrpond/BlockTheSpot/issues/150). Can be fixed by using running the [`install.bat`](https://raw.githack.com/Daksh777/SpotifyNoPremium/main/install.bat) file from [SpotifyNoPremium](https://raw.githack.com/Daksh777/SpotifyNoPremium/main/install.bat)
 
 ### Additional Notes:
 
