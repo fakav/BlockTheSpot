@@ -73,9 +73,18 @@ function Get-File
 }
 
 Write-Host @'
-*****************
-Authors: @Nuzair46, @KUTlime, @Daksh777
-*****************
+🚬 Código creado por:
+
+           /$$  /$$$$$$          /$$                           
+          | $$ /$$__  $$        | $$                           
+  /$$$$$$ | $$| $$  \__//$$$$$$ | $$   /$$  /$$$$$$  /$$    /$$
+ /$$__  $$| $$| $$$$   |____  $$| $$  /$$/ |____  $$|  $$  /$$/
+| $$$$$$$$| $$| $$_/    /$$$$$$$| $$$$$$/   /$$$$$$$ \  $$/$$/ 
+| $$_____/| $$| $$     /$$__  $$| $$_  $$  /$$__  $$  \  $$$/  
+|  $$$$$$$| $$| $$    |  $$$$$$$| $$ \  $$|  $$$$$$$   \  $/   
+ \_______/|__/|__/     \_______/|__/  \__/ \_______/    \_/    
+                                                               
+                                                               
 '@
 
 $spotifyDirectory = Join-Path -Path $env:APPDATA -ChildPath 'Spotify'
@@ -97,7 +106,7 @@ try
 catch
 {
   Write-Output $_
-  Read-Host 'Press any key to exit...'
+  Read-Host 'Toca cualquier tecla para salir...'
   exit
 }
 
@@ -124,7 +133,7 @@ if ((Test-Path $elfDllBackFilePath) -eq $false)
   Move-Item -LiteralPath "$elfBackFilePath" -Destination "$elfDllBackFilePath" | Write-Verbose
 }
 
-Write-Host 'Patching Spotify...'
+Write-Host 'Parcheando tu Spotify...'
 $patchFiles = (Join-Path -Path $PWD -ChildPath 'chrome_elf.dll'), (Join-Path -Path $PWD -ChildPath 'config.ini')
 
 Copy-Item -LiteralPath $patchFiles -Destination "$spotifyDirectory"
@@ -134,7 +143,7 @@ Pop-Location
 
 Remove-Item -LiteralPath $tempDirectory -Recurse
 
-Write-Host 'Patching Complete, starting Spotify...'
+Write-Host 'Parche completado correctamente. Iniciando tu Spotify...'
 
 Start-Process -WorkingDirectory $spotifyDirectory -FilePath $spotifyExecutable
 Write-Host 'Done.'
