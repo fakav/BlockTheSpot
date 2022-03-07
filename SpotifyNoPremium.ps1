@@ -33,7 +33,7 @@ function Get-File
 
   if ($useBitTransfer)
   {
-    Write-Information -MessageData 'Using a fallback BitTransfer method since you are running Windows PowerShell'
+    Write-Information -MessageData 'Usando método alternativo.'
     Start-BitsTransfer -Source $Uri -Destination "$($TargetFile.FullName)"
   }
   else
@@ -63,7 +63,7 @@ function Get-File
       Write-Progress -Activity "Downloading file '$downloadedFileName'" -Status "Downloaded ($([System.Math]::Floor($downloadedBytes/1024))K of $($totalLength)K): " -PercentComplete ((([System.Math]::Floor($downloadedBytes / 1024)) / $totalLength) * 100)
     }
 
-    Write-Progress -Activity "Finished downloading file '$downloadedFileName'"
+    Write-Progress -Activity "Se ha descargado '$downloadedFileName'"
 
     $targetStream.Flush()
     $targetStream.Close()
@@ -73,6 +73,7 @@ function Get-File
 }
 
 Write-Host @'
+ 
 🚬 Código creado por:
 
            /$$  /$$$$$$          /$$                           
@@ -91,7 +92,7 @@ $spotifyDirectory = Join-Path -Path $env:APPDATA -ChildPath 'Spotify'
 $spotifyExecutable = Join-Path -Path $spotifyDirectory -ChildPath 'Spotify.exe'
 $spotifyApps = Join-Path -Path $spotifyDirectory -ChildPath 'Apps'
 
-Write-Host "Stopping Spotify...`n"
+Write-Host "Cerrando Spotify...`n"
 Stop-Process -Name Spotify
 Stop-Process -Name SpotifyWebHelper
 
@@ -110,7 +111,7 @@ catch
   exit
 }
 
-Write-Host "Downloading latest patch (chrome_elf.zip)...`n"
+Write-Host "Descargando el último parche... UwU`n"
 $elfPath = Join-Path -Path $PWD -ChildPath 'chrome_elf.zip'
 try
 {
@@ -146,6 +147,6 @@ Remove-Item -LiteralPath $tempDirectory -Recurse
 Write-Host 'Parche completado correctamente. Iniciando tu Spotify...'
 
 Start-Process -WorkingDirectory $spotifyDirectory -FilePath $spotifyExecutable
-Write-Host 'Done.'
+Write-Host 'Instalación completada.'
 
 exit
