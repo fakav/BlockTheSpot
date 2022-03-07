@@ -74,7 +74,7 @@ function Get-File
 
 Write-Host @'
  
-🚬 Código creado por:
+))) Codigo creado por:
 
            /$$  /$$$$$$          /$$                           
           | $$ /$$__  $$        | $$                           
@@ -111,7 +111,7 @@ catch
   exit
 }
 
-Write-Host "Descargando el último parche... UwU`n"
+Write-Host "Descargando el ultimo parche... UwU`n"
 $elfPath = Join-Path -Path $PWD -ChildPath 'chrome_elf.zip'
 try
 {
@@ -147,6 +147,6 @@ Remove-Item -LiteralPath $tempDirectory -Recurse
 Write-Host 'Parche completado correctamente. Iniciando tu Spotify...'
 
 Start-Process -WorkingDirectory $spotifyDirectory -FilePath $spotifyExecutable
-Write-Host 'Instalación completada.'
+Write-Host 'Instalacion completada. Ya puedes cerrar esta ventana.'
 
 exit
